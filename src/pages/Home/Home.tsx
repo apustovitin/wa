@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Home.module.scss';
-import { Locator } from './components/locator/Locator'
+import { Locator } from './components/Locator/Locator'
 
 export const Home = () => {
   return (
