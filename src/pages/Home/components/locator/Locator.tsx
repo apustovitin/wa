@@ -1,26 +1,54 @@
-import React, {useState, useEffect, useRef}  from "react";
+import React, {useState, useEffect, useMemo, useRef}  from "react";
 import { YMaps, Map, SearchControl } from "react-yandex-maps";
 
-const apiKey = '';
+const apiKey = '2de061f8c04b93186963134caf0421c2';
+interface Weather {
+    [key: string]: string
+};
 
 export const Locator = () => {
+  const [type, setType] = useState('minutely');
   const [location, setLocation] = useState([55.75322, 37.622513]);
-  const [currnetWeather, setWeather] = useState({});
+  const weather = useRef<Weather>({});
+  const weatherList = useRef<any>([]);
+  // const [weather, setWeather] = useState<Weather>();
   let searchControl: any;
-  // useEffect(() => {
-  //   console.log('ComponentDidMount')
-  //   console.log("loc", location)
-  // })
+  useEffect(() => {
+    console.log('ComponentDidMount')
+    console.log("loc", location)
+  })
+
   useEffect(() => {
     console.log("loc", location);
     const [latitude, longitude] = location;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
+    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
       .then(response => {
         console.log("response", response)
         return response.json()
       })
-      .then(json => setWeather(json))
+      .then(json => weather.current = json)
   }, [location])
+
+  // useEffect(() => {
+  //   weatherList.current = weather.current[type]
+  // }, [type])
+
+  // weather = useMemo(() => {
+  //   const [latitude, longitude] = location;
+  //   let w = {}
+  //   fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
+  //     .then(response => {
+  //       console.log("response", response)
+  //       return response.json()
+  //     })
+  //     .then(json => w = json)
+  //     return w
+  // }, [location])
+  //
+  // const weatherList = useMemo(() => {
+  //   return weather.current[type]
+  // }, [type])
+
   const logMapClick = (e: any) => {
     console.log('click at ', e.get('coords'))
   }
@@ -34,11 +62,7 @@ export const Locator = () => {
     console.log('search result is: ', point)
     setLocation(point)
   }
-
-  const fetchLocationWeather = () => {
-    return new Array()
-  }
-
+  // console.log('cur', weather['current'])
   return(
     <>
     <YMaps
@@ -61,7 +85,12 @@ export const Locator = () => {
         />
       </Map>
     </YMaps>
-    <pre>{JSON.stringify(currnetWeather, null, 2)}</pre>
+    <h1>Прогноз: {type}</h1>
+
+    <button onClick={() => setType('minutely')}>По минутно</button>
+    <button onClick={() => setType('hourly')}>По часам</button>
+    <button onClick={() => setType('daily')}>По дням</button>
+    <pre>{JSON.stringify(weather.current[type] , null, 2)}</pre>
     </>
   )
 }
