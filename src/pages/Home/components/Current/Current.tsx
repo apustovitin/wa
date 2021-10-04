@@ -1,10 +1,12 @@
 import React from 'react';
 // import { GlobalSvgSelector } from '../../../../assets/icons/global/GlobalSvgSelector';
-import s from './ThisDay.module.scss';
+import s from './Current.module.scss';
+import {connect, ConnectedProps} from 'react-redux';
+import type { InitialState } from '../../../../redux/locatorReducer'
 
-interface Props {}
+type Props = InitialState & {} & {}
 
-export const ThisDay = (props: Props) => {
+const Current = (props: any) => {
   return (
     <div className={s.this__day}>
       <div className={s.top__block}>
@@ -18,9 +20,21 @@ export const ThisDay = (props: Props) => {
           Время: <span>21:54</span>
         </div>
         <div className={s.this__city}>
-          Время: <span>Санкт-Петербург</span>
+          Населенный пункт: <span>{props.location_name}</span>
         </div>
       </div>
     </div>
   );
 };
+
+const mapStateToProps = (state:any) => {
+  console.log("state", state)
+  return {
+    location_name: state.locator.location_name
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(Current)
