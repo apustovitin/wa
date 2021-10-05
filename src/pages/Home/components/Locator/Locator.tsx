@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useMemo, useRef}  from "react";
 import { YMaps, Map, SearchControl } from "react-yandex-maps";
+import {changeLocation} from '../../../../redux/actions'
+import {connect, ConnectedProps} from 'react-redux';
 
 const apiKey = '2de061f8c04b93186963134caf0421c2';
 const LANG = 'ru';
@@ -7,28 +9,9 @@ const initialLocation = [55.75322, 37.622513];
 interface Weather {
     [key: string]: string
 };
+type Props = {} & {} & {}
 
-//
-// let initialWeather: Weather;
-// const request = async (location: Array<number>) => {
-//   const [latitude, longitude] = location;
-//   const weatherPromise = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&lang=${LANG}&units=metric`)
-//     .then(response => response.json())
-//     .then(json => json)
-//   return weatherPromise;
-// }
-// const callRequest = async () => {
-//   initialWeather = await request(initialLocation);
-//   console.log("initialWeather", initialWeather);
-// }
-//
-// callRequest();
-
-
-
-
-
-export const Locator = () => {
+const Locator = (props: any) => {
   const [type, setType] = useState('minutely');
   const [location, setLocation] = useState(initialLocation);
   // const weather = useRef<Weather>({});
@@ -52,26 +35,6 @@ export const Locator = () => {
       .then(json => setWeather(json))
   }, [location])
 
-  // useEffect(() => {
-  //   weatherList.current = weather.current[type]
-  // }, [type])
-
-  // weather = useMemo(() => {
-  //   const [latitude, longitude] = location;
-  //   let w = {}
-  //   fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
-  //     .then(response => {
-  //       console.log("response", response)
-  //       return response.json()
-  //     })
-  //     .then(json => w = json)
-  //     return w
-  // }, [location])
-  //
-  // const weatherList = useMemo(() => {
-  //   return weather.current[type]
-  // }, [type])
-
   const logMapClick = (e: any) => {
     console.log('click at ', e.get('coords'))
   }
@@ -84,6 +47,7 @@ export const Locator = () => {
     let point = results[selected].geometry.getCoordinates();
     let name = results[selected].properties._data.name
     console.log('search result is: ', results[selected].properties._data.name)
+    props.changeLocation({coordinates: point, name: name})
     setName(name)
     setLocation(point)
   }
@@ -119,3 +83,12 @@ export const Locator = () => {
     </>
   )
 }
+
+const mapDispatchToProps = {
+  changeLocation
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Locator)

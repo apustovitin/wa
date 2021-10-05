@@ -2,9 +2,9 @@ import React from 'react';
 // import { GlobalSvgSelector } from '../../../../assets/icons/global/GlobalSvgSelector';
 import s from './Current.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
-import type { InitialState } from '../../../../redux/locatorReducer'
+import type { LocationState } from '../../../../redux/locatorReducer'
 
-type Props = InitialState & {} & {}
+type Props = LocationState & {} & {}
 
 const Current = (props: any) => {
   return (
@@ -20,7 +20,7 @@ const Current = (props: any) => {
           Время: <span>21:54</span>
         </div>
         <div className={s.this__city}>
-          Населенный пункт: <span>{props.location_name}</span>
+          Место: <span>{props.name}</span>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@ const Current = (props: any) => {
 const mapStateToProps = (state:any) => {
   console.log("state", state)
   return {
-    location_name: state.locator.location_name
+    name: state.locator.name
   }
 }
 

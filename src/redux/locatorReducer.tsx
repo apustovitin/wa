@@ -1,15 +1,22 @@
-import {combineReducers} from 'redux';
+import {CHANGE_LOCATION} from './types'
 
-export type InitialState = {
-  location: Array<number>,
-  location_name: string
+export type LocationState = {
+  coordinates: Array<number>,
+  name: string
 }
 
-const initialState: InitialState = {
-  location: [55.75322, 37.622513],
-  location_name: 'Москва',
+const initialState: LocationState = {
+  coordinates: [55.75322, 37.622513],
+  name: 'Москва',
 }
 
-export const locatorReducer = (state: InitialState = initialState, action: any) => {
-  return state
+export const locatorReducer = (state: LocationState = initialState, action: any) => {
+  switch (action.type) {
+    case CHANGE_LOCATION:
+      return {
+        coordinates: action.payload.coordinates,
+        name: action.payload.name,
+      }
+    default: return state
+  }
 }
