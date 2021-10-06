@@ -1,17 +1,23 @@
 import React from 'react';
 // import { GlobalSvgSelector } from '../../../../assets/icons/global/GlobalSvgSelector';
 import s from './Current.module.scss';
-import {connect, ConnectedProps} from 'react-redux';
-import type { LocationState } from '../../../../redux/locatorReducer'
+import {connect} from 'react-redux';
+import {Loader} from '../Loader/Loader'
 
-type Props = LocationState & {} & {}
 
 const Current = (props: any) => {
+  if (props.loading) {
+    return (
+      <div className={s.this__day}>
+        <Loader />
+      </div>
+    )
+  }
   return (
     <div className={s.this__day}>
       <div className={s.top__block}>
         <div className={s.top__block_wrapper}>
-          <div className={s.this__temp}>20°</div>
+          <div className={s.this__temp}>{props.weather.current.temp}</div>
           <div className={s.this__day_name}>Сегодня</div>
         </div>
       </div>
@@ -28,9 +34,11 @@ const Current = (props: any) => {
 };
 
 const mapStateToProps = (state:any) => {
-  console.log("state", state)
+  console.log("state in Current", state)
   return {
-    name: state.locator.name
+    name: state.locator.name,
+    weather: state.locator.weather,
+    loading: state.app.loading
   }
 }
 

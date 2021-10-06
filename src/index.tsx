@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import './styles/index.scss';
 import {Provider} from 'react-redux'
-import {compose, createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './redux/rootReducer'
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import App from './App';
+import './styles/index.scss';
 
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(
+  thunk)
+));
 const app = (
   <React.StrictMode>
     <Router>

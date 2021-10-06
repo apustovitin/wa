@@ -4,9 +4,7 @@ import {ReactComponent as HeaderLogo} from '../../asserts/icons/icons8-weather.s
 import {ReactComponent as ChangeTheme} from '../../asserts/icons/change_theme.svg';
 import Select from 'react-select';
 
-interface Props {}
-
-export const Header = (Props : any) => {
+export const Header = () => {
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },

@@ -1,22 +1,27 @@
-import {CHANGE_LOCATION} from './types'
+import {CHANGE_LOCATION, FETCH_WEATHER} from './types'
 
-export type LocationState = {
+export type WeatherState = {
   coordinates: Array<number>,
   name: string
+  weather: any
 }
 
-const initialState: LocationState = {
+const initialState: WeatherState = {
   coordinates: [55.75322, 37.622513],
   name: 'Москва',
+  weather: {}
 }
 
-export const locatorReducer = (state: LocationState = initialState, action: any) => {
+export const locatorReducer = (state: WeatherState = initialState, action: any) => {
   switch (action.type) {
     case CHANGE_LOCATION:
       return {
+        ...state,
         coordinates: action.payload.coordinates,
         name: action.payload.name,
       }
+    case FETCH_WEATHER:
+      return { ...state, weather: action.payload }
     default: return state
   }
 }
