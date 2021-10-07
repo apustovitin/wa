@@ -4,9 +4,8 @@ import s from './Current.module.scss';
 import {connect} from 'react-redux';
 import {Loader} from '../Loader/Loader'
 
-
 const Current = (props: any) => {
-  if (props.loading) {
+  if (props.loading || !props.weather.current) {
     return (
       <div className={s.this__day}>
         <Loader />
@@ -17,7 +16,7 @@ const Current = (props: any) => {
     <div className={s.this__day}>
       <div className={s.top__block}>
         <div className={s.top__block_wrapper}>
-          <div className={s.this__temp}>{props.weather.current.temp}</div>
+          <div className={s.this__temp}>{Math.round(props.weather.current.temp)}</div>
           <div className={s.this__day_name}>Сегодня</div>
         </div>
       </div>
@@ -38,7 +37,8 @@ const mapStateToProps = (state:any) => {
   return {
     name: state.locator.name,
     weather: state.locator.weather,
-    loading: state.app.loading
+    loading: state.app.loading,
+    alert: state.app.alert
   }
 }
 

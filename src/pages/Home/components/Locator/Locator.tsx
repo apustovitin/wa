@@ -1,14 +1,25 @@
-import React, {useState}  from "react";
+import React, {useState, useEffect}  from "react";
 import { YMaps, Map, SearchControl } from "react-yandex-maps";
 import {changeLocation, fetchWeather} from '../../../../redux/actions'
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 
 
-const Locator = (props: any) => {
+export const Locator = () => {
   const [type, setType] = useState('minutely');
-
   let searchControl: any;
+  const dispatch = useDispatch()
+  const coordinates = useSelector((state: any) => state.locator.coordinates)
+  useEffect(() => {
+    dispatch(fetchWeather(coordinates))
+    let timerID = setInterval(
+      () => dispatch(fetchWeather(coordinates)),
+      20000
+    );
+    return () => {
+      clearInterval(timerID);
+    }
+  }, [coordinates, dispatch])
 
   const processMapClick = (e: any) => {
     console.log('click at ', e.get('coords'))
@@ -22,13 +33,13 @@ const Locator = (props: any) => {
     let point = results[selected].geometry.getCoordinates();
     let name = results[selected].properties._data.name
     console.log('search result is: ', results[selected].properties._data.name)
-    props.changeLocation({coordinates: point, name: name})
-    props.fetchWeather(point)
+    dispatch(changeLocation({coordinates: point, name: name}))
+    // setLocation(point)
   }
   return(
     <>
     <YMaps
-      query={{ apikey: "" }}
+      query={{ apikey: "ebd14675-19d0-4d07-be05-fa83f6baa37d" }}
     >
       <Map
         defaultState={{
@@ -52,24 +63,7 @@ const Locator = (props: any) => {
     <button onClick={() => setType('minutely')}>По минутно</button>
     <button onClick={() => setType('hourly')}>По часам</button>
     <button onClick={() => setType('daily')}>По дням</button>
-    <pre>{JSON.stringify(props.weather[type] , null, 2)}</pre>
+    <pre>{JSON.stringify({type} , null, 2)}</pre>
     </>
   )
 }
-
-const mapDispatchToProps = {
-  changeLocation,
-  fetchWeather
-}
-
-const mapStateToProps = (state:any) => {
-  console.log("state in Locator", state)
-  return {
-    weather: state.locator.weather
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Locator)
