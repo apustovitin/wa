@@ -12,17 +12,24 @@ const Current = (props: any) => {
       </div>
     )
   }
+  const timezone = props.weather.timezone
+  const timestamp = props.weather.current.dt * 1000
+  let date = new Date(timestamp)
+  let dateString = date.toLocaleDateString('ru-RU', { timeZone: timezone })
+  let timeString = date.toLocaleTimeString('ru-RU', { timeZone: timezone })
   return (
     <div className={s.this__day}>
       <div className={s.top__block}>
         <div className={s.top__block_wrapper}>
           <div className={s.this__temp}>{Math.round(props.weather.current.temp)}</div>
-          <div className={s.this__day_name}>Сегодня</div>
+          <div className={s.this__day_name}>
+            Дата: <span>{dateString}</span>
+          </div>
         </div>
       </div>
       <div className={s.bottom__block}>
         <div className={s.this__time}>
-          Время: <span>21:54</span>
+          Время: <span>{timeString}</span>
         </div>
         <div className={s.this__city}>
           Место: <span>{props.name}</span>

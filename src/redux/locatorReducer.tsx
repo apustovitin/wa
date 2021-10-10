@@ -2,13 +2,15 @@ import {CHANGE_LOCATION, FETCH_WEATHER} from './types'
 
 export type WeatherState = {
   coordinates: Array<number>,
-  name: string
+  name: string,
+  lang: string,
   weather: any
 }
 
 const initialState: WeatherState = {
   coordinates: [55.75322, 37.622513],
   name: 'Москва',
+  lang: 'ru',
   weather: {}
 }
 

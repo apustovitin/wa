@@ -1,5 +1,5 @@
 import React, {useState, useEffect}  from "react";
-import { YMaps, Map, SearchControl } from "react-yandex-maps";
+import { YMaps, Map, SearchControl, GeolocationControl } from "react-yandex-maps";
 import {changeLocation, fetchWeather} from '../../../../redux/actions'
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -11,10 +11,10 @@ export const Locator = () => {
   const dispatch = useDispatch()
   const coordinates = useSelector((state: any) => state.locator.coordinates)
   useEffect(() => {
-    dispatch(fetchWeather(coordinates))
+    dispatch(fetchWeather(coordinates, "ru"))
     let timerID = setInterval(
-      () => dispatch(fetchWeather(coordinates)),
-      20000
+      () => dispatch(fetchWeather(coordinates, "ru")),
+      60000
     );
     return () => {
       clearInterval(timerID);
@@ -36,6 +36,14 @@ export const Locator = () => {
     dispatch(changeLocation({coordinates: point, name: name}))
     // setLocation(point)
   }
+
+  const processGeoLocation = (e: any) => {
+    let point = e.get('position');
+    let ob = e.get('geoObjects');
+    let name = ob.get(0).properties._data.name;
+    dispatch(changeLocation({coordinates: point, name: name}))
+  }
+
   return(
     <>
     <YMaps
@@ -55,6 +63,10 @@ export const Locator = () => {
             (ref) => searchControl = ref
           }
           onResultselect={processSearchResult}
+        />
+        <GeolocationControl
+          options={{ float: 'left' }}
+          onLocationchange={processGeoLocation}
         />
       </Map>
     </YMaps>

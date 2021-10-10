@@ -32,11 +32,10 @@ export function hideAlert() {
   }
 }
 
-export function fetchWeather(coordinates: Array<number>) {
+export function fetchWeather(coordinates: Array<number>, lang: string) {
   const apiKey = '2de061f8c04b93186963134caf0421c2';
-  const LANG = 'ru';
   const [latitude, longitude] = coordinates;
-  const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&lang=${LANG}&units=metric`
+  const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&lang=${lang}&units=metric`
   return async (dispatch: any) => {
     try {
       dispatch(showLoader())
