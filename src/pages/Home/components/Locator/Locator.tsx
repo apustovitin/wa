@@ -1,12 +1,12 @@
-import React, {useState, useEffect}  from "react";
+import React, {useEffect}  from "react";
 import { YMaps, Map, SearchControl, GeolocationControl } from "react-yandex-maps";
 import {changeLocation, fetchWeather} from '../../../../redux/actions'
 import {useDispatch, useSelector} from 'react-redux';
+import s from './Locator.module.scss';
 
 
 
 export const Locator = () => {
-  const [type, setType] = useState('minutely');
   let searchControl: any;
   const dispatch = useDispatch()
   const coordinates = useSelector((state: any) => state.locator.coordinates)
@@ -41,41 +41,35 @@ export const Locator = () => {
     let point = e.get('position');
     let ob = e.get('geoObjects');
     let name = ob.get(0).properties._data.name;
-    dispatch(changeLocation({coordinates: point, name: name}))
+    dispatch(changeLocation({coordinates: point, name: name}));
   }
 
   return(
-    <>
-    <YMaps
-      query={{ apikey: "ebd14675-19d0-4d07-be05-fa83f6baa37d" }}
-    >
-      <Map
-        defaultState={{
-          center: [55.751574, 37.573856],
-          zoom: 9,
-          controls: [],
-        }}
-        onClick={processMapClick}
+    <div className={s.this__day}>
+      <YMaps
+        query={{ apikey: "ebd14675-19d0-4d07-be05-fa83f6baa37d" }}
       >
-        <SearchControl
-          options={{ float: 'right' }}
-          instanceRef={
-            (ref) => searchControl = ref
-          }
-          onResultselect={processSearchResult}
-        />
-        <GeolocationControl
-          options={{ float: 'left' }}
-          onLocationchange={processGeoLocation}
-        />
-      </Map>
-    </YMaps>
-    <h1>Прогноз: {type}</h1>
-
-    <button onClick={() => setType('minutely')}>По минутно</button>
-    <button onClick={() => setType('hourly')}>По часам</button>
-    <button onClick={() => setType('daily')}>По дням</button>
-    <pre>{JSON.stringify({type} , null, 2)}</pre>
-    </>
+        <Map
+          defaultState={{
+            center: [55.751574, 37.573856],
+            zoom: 9,
+            controls: [],
+          }}
+          onClick={processMapClick}
+        >
+          <SearchControl
+            options={{ float: 'right' }}
+            instanceRef={
+              (ref) => searchControl = ref
+            }
+            onResultselect={processSearchResult}
+          />
+          <GeolocationControl
+            options={{ float: 'left' }}
+            onLocationchange={processGeoLocation}
+          />
+        </Map>
+      </YMaps>
+    </div>
   )
 }

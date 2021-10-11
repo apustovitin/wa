@@ -11,20 +11,27 @@
 
 .top__block {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   width: 100%;
   margin-bottom: 30px;
-  svg {
-    width: 119px;
-    height: 119px;
+  .top__block_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .this__temp {
+      font-size: 96px;
+      font-weight: 500;
+      color: $primary-color;
+    }
+    img {
+      display: block;
+      width: 119px;
+      height: 119px;
+    }
   }
-  .this__temp {
-    font-size: 96px;
-    font-weight: 500;
-    color: $primary-color;
-  }
-  .this__day_name {
+  .this__description {
     font-size: 40px;
     color: var(#{--text-color-default});
   }
@@ -32,7 +39,8 @@
 
 .bottom__block {
   .this__time,
-  .this__city {
+  .this__city,
+  .this__date {
     color: $base-color;
     font-size: 25px;
   }

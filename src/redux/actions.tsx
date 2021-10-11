@@ -1,9 +1,16 @@
-import {CHANGE_LOCATION, FETCH_WEATHER, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT} from './types'
+import {CHANGE_LOCATION, FETCH_WEATHER, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, CHANGE_TYPE} from './types'
 
 export function changeLocation(location: any) {
   return {
     type: CHANGE_LOCATION,
     payload: location
+  }
+}
+
+export function changeType(type: string) {
+  return {
+    type: CHANGE_TYPE,
+    payload: type
   }
 }
 

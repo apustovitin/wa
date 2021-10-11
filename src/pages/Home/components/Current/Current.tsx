@@ -12,6 +12,9 @@ const Current = (props: any) => {
       </div>
     )
   }
+  const icon = props.weather.current.weather[0]['icon'];
+  const url = `http://openweathermap.org/img/wn/${icon}@2x.png`
+  const description = props.weather.current.weather[0]['description'];
   const timezone = props.weather.timezone
   const timestamp = props.weather.current.dt * 1000
   let date = new Date(timestamp)
@@ -21,13 +24,19 @@ const Current = (props: any) => {
     <div className={s.this__day}>
       <div className={s.top__block}>
         <div className={s.top__block_wrapper}>
-          <div className={s.this__temp}>{Math.round(props.weather.current.temp)}</div>
-          <div className={s.this__day_name}>
-            Дата: <span>{dateString}</span>
+          <div className={s.this__temp}>
+            {Math.round(props.weather.current.temp)}°C
           </div>
+          <img src={url} alt="icon url"/>
+        </div>
+        <div className={s.this__description}>
+          {description}
         </div>
       </div>
       <div className={s.bottom__block}>
+        <div className={s.this__date}>
+          Дата: <span>{dateString}</span>
+        </div>
         <div className={s.this__time}>
           Время: <span>{timeString}</span>
         </div>
